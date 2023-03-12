@@ -1,0 +1,68 @@
+using System;
+
+
+public class metody
+{
+    public float suma(float a, float b)
+    {
+        return a + b;
+    }
+    public float roznica(float a, float b)
+    {
+        return a - b;
+    }
+    public float iloczyn(float a, float b)
+    {
+        return a * b;
+    }
+    public float iloraz(float a, float b)
+    {
+        if (b == 0) return -1;
+        else return a / b;
+    }
+    public float reszta(float a, float b)
+    {
+        if (b == 0) return -1;
+        else return a % b;
+    }
+}
+public struct spr
+{
+    public float x1;
+    public float x2;
+    public float oczekiwanyW;
+    public float faktycznyW;
+    public bool czySukces;
+    spr(float x, float y, float wynikO, float wynikW)
+    {
+        x1 = x;
+        x2 = x;
+        oczekiwanyW = wynikO;
+        faktycznyW = wynikW;
+        if(wynikO == wynikW) czySukces = true;
+        else czySukces = false;
+    }
+
+}
+
+//Jako dodatkowe zadanie - metoda w strukturze do zautomatyzowania procesu wywołania metody testowanej oraz
+//ustawienia wyniku.
+//3. W metodzie Main dla każdej metody wypełniamy tablicę struktur z punktu drugiego.
+//4. W pętli wykonujemy metodę testowaną.
+//5. Mając wyniki wykonania tworzymy raport z wykonania testów.
+
+namespace testoprogr
+
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            metody m1;
+            spr s1;
+            s1.x1 = 10;
+            s1.x2 = 3;
+            
+        }
+    }
+}
