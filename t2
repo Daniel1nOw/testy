@@ -1,0 +1,67 @@
+using System;
+using Xunit;
+
+namespace TestProject1
+{
+    public class UnitTest1
+    {
+        [Fact]
+        public void Test1()
+        {
+            int res = testoprogr.Program.fib(2);
+            Assert.Equal(1, res);
+
+        }
+        [Fact]
+        public void Test2()
+        { 
+
+            int res1 = testoprogr.Program.fib(4);
+            Assert.Equal(3, res1);
+
+        }
+        [Fact]
+        public void Test3()
+        {
+
+            int res1 = testoprogr.Program.fib(14);
+            Assert.Equal(377, res1);
+
+        }
+        [Fact]
+        public void Test4()
+        {
+
+            int res1 = testoprogr.Program.fib(-14);
+            Assert.Equal(-1, res1);
+
+        }
+    }
+}
+
+using System;
+
+
+
+namespace testoprogr
+
+{
+    public class Program
+
+    {
+        public static int fib(int nr)
+        {
+            if (nr < 0)
+                return -1;
+            else if (nr == 0)
+                return 0;
+            else if (nr < 3)
+                return 1;
+            else
+                return fib(nr - 2) + fib(nr - 1);
+        }
+        static void Main(string[] args)
+        { }
+
+    }
+}
