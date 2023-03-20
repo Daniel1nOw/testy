@@ -1,0 +1,43 @@
+using System;
+using System.IO;
+using System.Text;
+
+namespace lab3test
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using (StreamReader sr = File.OpenText(@"C:\Users\28925\source\repos\lab3test\lab3test\testtest.txt"))
+            {
+                string s = "";
+                System.Collections.Generic.Dictionary<string, int>
+                map = new System.Collections.Generic.Dictionary<string, int>();
+                string root = " ";
+                int przerwa = 0; // pozycja " " - początek słowa kiedy i == " " - koniec słowa
+                
+
+                while ((s = sr.ReadLine()) != null)
+                {
+                    // tutaj iteracja po literze
+                    for (int i = 0; i <= s.Length; i++)
+                    {
+
+                        if (root.Equals(s[i]))
+                        {
+                            try
+                            {
+                                map.Add(s.Substring(i-(i-przerwa), i-przerwa), i);
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("An element with Key = \"txt\" already exists.");
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
