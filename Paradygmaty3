@@ -33,4 +33,4 @@ int main()
 // asci liczby są w pewnej kolejnosci
 //spr przedziały
 //getline a nie cin bo cin nie spr spacji
-// 
+// zad1 funkcja nie pobiera tablicy jako parametru i psr tylko czy elementy nie są ujemne
