@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Text;
 
 namespace lab3test
@@ -8,35 +9,56 @@ namespace lab3test
     {
         static void Main(string[] args)
         {
-            using (StreamReader sr = File.OpenText(@"C:\Users\28925\source\repos\lab3test\lab3test\testtest.txt"))
+            IDictionary<string, int> map = new Dictionary<string, int>();
+            using (StreamReader sr = File.OpenText(@"C:\Users\Daniel z\source\repos\Lab03\Lab03\TextFile1.txt"))
             {
                 string s = "";
-                System.Collections.Generic.Dictionary<string, int>
-                map = new System.Collections.Generic.Dictionary<string, int>();
-                string root = " ";
+                
+                char root = ' ';
                 int przerwa = 0; // pozycja " " - początek słowa kiedy i == " " - koniec słowa
                 
 
                 while ((s = sr.ReadLine()) != null)
                 {
-                    // tutaj iteracja po literze
-                    for (int i = 0; i <= s.Length; i++)
+                    //tutaj iteracja po literze
+                    for (int i = 0; i < s.Length; i++)
                     {
-
-                        if (root.Equals(s[i]))
+                        if (i == s.Length - 1)
                         {
-                            try
+                            i++;
+                            if (map.ContainsKey(s.Substring(przerwa, i - przerwa)))
                             {
-                                map.Add(s.Substring(i-(i-przerwa), i-przerwa), i);
+                                map[s.Substring(przerwa, i - przerwa)] = map[s.Substring(przerwa, i - przerwa)] + 1;
                             }
-                            catch (ArgumentException)
+                            else
                             {
-                                Console.WriteLine("An element with Key = \"txt\" already exists.");
+                                map.Add(s.Substring(przerwa, i - przerwa), 1);
                             }
-
+                            przerwa = 0;
                         }
+                        else if (root.Equals(s[i]))
+                        {
+                            
+
+                            if (map.ContainsKey(s.Substring(przerwa, i-przerwa)))
+                            {
+                                map[s.Substring(przerwa, i- przerwa)] = map[s.Substring(przerwa, i-przerwa)] + 1;
+                            }
+                            else map.Add(s.Substring(przerwa, i - przerwa), 1);
+                            przerwa = i + 1;
+                            
+                        }
+                        
                     }
+
                 }
+                
+            }
+            //map.Add("idk", 5);
+            foreach (KeyValuePair<string, int> author in map)
+            {
+                Console.WriteLine("Key: {0}, Value: {1}",
+                author.Key, author.Value);
             }
         }
     }
