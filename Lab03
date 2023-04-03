@@ -1,65 +1,51 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.ExceptionServices;
-using System.Text;
+using Xunit;
 
-namespace lab3test
+namespace Lab03class
 {
-    class Program
+    public class ZliczajWyrazy
     {
-        static void Main(string[] args)
-        {
-            IDictionary<string, int> map = new Dictionary<string, int>();
-            using (StreamReader sr = File.OpenText(@"C:\Users\Daniel z\source\repos\Lab03\Lab03\TextFile1.txt"))
+        IDictionary<string, uint> map = new Dictionary<string, uint>();
+        public bool odczytajPlik(System.IO.TextReader file)
+		{
+            
+            using (StreamReader sr = File.OpenText(@"C:\Users\28925\source\repos\lab3test\lab3test\testtest.txt")) // otwieranie na zewnatrz
             {
-                string s = "";
-                
-                char root = ' ';
-                int przerwa = 0; // pozycja " " - początek słowa kiedy i == " " - koniec słowa
-                
-
+                string s = "";;
                 while ((s = sr.ReadLine()) != null)
                 {
-                    //tutaj iteracja po literze
-                    for (int i = 0; i < s.Length; i++)
-                    {
-                        if (i == s.Length - 1)
+                    string[] wyrazmap = s.Split(" ");
+                    foreach (string wyraz in wyrazmap)
+                        if (map.ContainsKey(wyraz))
                         {
-                            i++;
-                            if (map.ContainsKey(s.Substring(przerwa, i - przerwa)))
-                            {
-                                map[s.Substring(przerwa, i - przerwa)] = map[s.Substring(przerwa, i - przerwa)] + 1;
-                            }
-                            else
-                            {
-                                map.Add(s.Substring(przerwa, i - przerwa), 1);
-                            }
-                            przerwa = 0;
+                            map[wyraz] += 1;
                         }
-                        else if (root.Equals(s[i]))
-                        {
-                            
-
-                            if (map.ContainsKey(s.Substring(przerwa, i-przerwa)))
-                            {
-                                map[s.Substring(przerwa, i- przerwa)] = map[s.Substring(przerwa, i-przerwa)] + 1;
-                            }
-                            else map.Add(s.Substring(przerwa, i - przerwa), 1);
-                            przerwa = i + 1;
-                            
-                        }
-                        
-                    }
-
+                        else map.Add(wyraz, 1);
                 }
-                
             }
-            //map.Add("idk", 5);
-            foreach (KeyValuePair<string, int> author in map)
-            {
-                Console.WriteLine("Key: {0}, Value: {1}",
-                author.Key, author.Value);
-            }
+            return true;
+        }
+
+        public uint iloscWystapien(String x) 
+        {
+            return map[x];
+        }
+	}
+
+    public class TestZliczajWyrazy
+    {
+        [Fact]
+        public void Test1()
+        {
+            ZliczajWyrazy zliczajWyrazy = new ZliczajWyrazy();
+            StreamReader plik = System.IO.File.OpenText("file name");
+
+            bool res = zliczajWyrazy.odczytajPlik(plik);
+            Assert.Equal(true, res);
+            uint jakisWyrazCount = zliczajWyrazy.iloscWystapien("jakisWyraz");
+            Assert.Equal(3u, jakisWyrazCount);
         }
     }
 }
