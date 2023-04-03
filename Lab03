@@ -10,11 +10,9 @@ namespace Lab03class
         IDictionary<string, uint> map = new Dictionary<string, uint>();
         public bool odczytajPlik(System.IO.TextReader file)
 		{
-            
-            using (StreamReader sr = File.OpenText(@"C:\Users\28925\source\repos\lab3test\lab3test\testtest.txt")) // otwieranie na zewnatrz
             {
-                string s = "";;
-                while ((s = sr.ReadLine()) != null)
+                string s = "";
+                while ((s = file.ReadLine()) != null)
                 {
                     string[] wyrazmap = s.Split(" ");
                     foreach (string wyraz in wyrazmap)
