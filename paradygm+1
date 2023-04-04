@@ -1,0 +1,68 @@
+#include<iostream>
+#include<cstdlib>
+#include<string>
+#include<stack>
+
+using namespace std;
+int main()
+{
+	string np = "4 1.2 10 + * =";
+	stack<float> onp;
+	char pls = '+';
+	char mnz = '*';
+	char min = '-';
+	char dzi = '/';
+	char wyn = '=';
+	char spc = ' ';
+	float temp;
+	for(int i = 0; i < np.length(); i++) {
+		if(np[i]== spc) {
+			continue;
+		}
+		else if(np[i]== wyn) {
+			cout <<onp.top();
+			return 0;
+		}
+		else if(np[i]!= pls && np[i]!= mnz && np[i]!= min && np[i]!= dzi) {
+			if(np[i + 1]!= spc) {
+				int licz = 0;
+				int temp_i= i;
+			while(np[i]!= spc) {
+				licz++;
+				i++;
+			}
+			onp.push(stof(np.substr(temp_i, licz)));
+			}
+			else{onp.push(float(np[i]-48));
+			}
+		}
+		else if(np[i] == pls) { 
+			temp = onp.top(); 
+			onp.pop(); 
+			temp += onp.top(); 
+			onp.pop(); 
+			onp.push(temp); 
+		}
+		else if(np[i] == min) { 
+			temp = onp.top(); 
+			onp.pop(); 
+			temp -= onp.top(); 
+			onp.pop(); 
+			onp.push(temp); 
+		}
+		else if(np[i] == mnz) { 
+			temp = onp.top(); 
+			onp.pop(); 
+			temp *= onp.top(); 
+			onp.pop(); 
+			onp.push(temp); 
+		}
+		else if(np[i] == dzi) { 
+			temp = onp.top(); 
+			onp.pop(); 
+			temp /= onp.top(); 
+			onp.pop(); 
+			onp.push(temp); 
+		}
+	}
+}
