@@ -1,0 +1,92 @@
+#include<iostream>
+#include<cstdlib>
+#include<string>
+#include<chrono>
+
+using namespace std;
+
+int main()
+{
+	//MACIERZ 3 X 3:
+	double tab3x31[3][3];
+	double tab3x32[3][3];
+	double wynik1[3][3];
+	srand((unsigned)time(NULL));
+	auto start = std::chrono::steady_clock::now();
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) { 
+			double f = (double)rand() / RAND_MAX;
+			tab3x31 [i][j] = f * (100); 
+		}
+	}
+	for (int i = 0; i < 3; i++) { 
+		for (int j = 0; j < 3; j++) { 
+			double f = (double)rand() / RAND_MAX; 
+			tab3x32[i][j] = f * (100); 
+		} 
+	}
+	for (int i = 0; i < 3; i++) { 
+		for (int j = 0; j < 3; j++) { 
+			wynik1[i][j] = 0; 
+			for (int l = 0; l < 3; l++) { 
+				wynik1[i][j] += tab3x31[i][l] * tab3x32[l][j]; 
+			} 
+		} 
+	}auto stop = std::chrono::steady_clock::now(); 
+	double czas_trwania = double(chrono::duration_cast <chrono::nanoseconds> (stop - start).count()); 
+	cout << "czas trwania - macierz 3x3 - sekundy: " << czas_trwania / 1e9 << endl;
+	// MACIERZ 10 X 10:
+	double tab10x101[10][10];
+	double tab10x102[10][10];
+	double wynik2[10][10];
+	start = chrono::steady_clock::now();
+	for (int i = 0; i < 10; i++) { 
+		for (int j = 0; j < 10; j++) { 
+			double f = (double)rand() / RAND_MAX; 
+			tab10x101[i][j] = f * (100); 
+		} 
+	}
+	for (int i = 0; i < 10; i++) { 
+		for (int j = 0; j < 10; j++) { 
+			double f = (double)rand() / RAND_MAX; 
+			tab10x102[i][j] = f * (100); 
+		} 
+	}
+	for (int i = 0; i < 10; i++) { 
+		for (int j = 0; j < 10; j++) { 
+			wynik2[i][j] = 0; 
+			for (int l = 0; l < 10; l++) { 
+				wynik2[i][j] += tab10x101[i][l] * tab10x102[l][j]; 
+			} 
+		} 
+	}stop = chrono::steady_clock::now(); 
+	czas_trwania = double(chrono::duration_cast <chrono::nanoseconds> (stop - start).count()); 
+	cout << "czas trwania - macierz 10x10 - sekundy: " << czas_trwania / 1e9 << endl;
+	// MACIERZ 100 X 100:
+	double tab100x1001[100][100];
+	double tab100x1002[100][100];
+	double wynik3[100][100];start = chrono::steady_clock::now();
+	for(int i = 0; i < 100; i++) {
+		for(int j = 0; j < 100; j++) {
+			double f = (double)rand() / RAND_MAX;tab100x1001[i][j] = f * (100);
+		}
+	}
+	for(int i = 0; i < 100; i++) {
+		for(int j = 0; j < 100; j++) {
+			double f = (double)rand() / RAND_MAX;tab100x1002[i][j] = f * (100);
+		}
+	}
+	for(int i = 0; i < 100; i++) {
+		for(int j = 0; j < 100; j++) {
+			wynik3[i][j] = 0;
+			for(int l = 0; l < 10; l++) {
+				wynik3[i][j] += tab100x1001[i][l] * tab100x1002[l][j];
+			}
+		}
+	}
+	stop = chrono::steady_clock::now();
+	czas_trwania = double(chrono::duration_cast <chrono::nanoseconds> (stop -start).count());
+	cout <<"czas trwania - macierz 100x100 - sekundy: "<<czas_trwania / 1e9 <<endl;
+	//MACIERZ 1000 X 1000:
+	//double tab1000x10001[1000][1000];
+}
