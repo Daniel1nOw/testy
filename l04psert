@@ -1,0 +1,67 @@
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+int ile_jest(int roz) {
+
+
+
+    return 0;
+}
+// ile jest : spr wielkosc tablicy - ilosc wpisanych znakow
+
+void wprowadz(int tab3, char (&wyjscie)[], int (&zajete)[], char(&znaki)[]) {
+    srand(time(0));
+    int rng = rand() % 45 + 48;
+    int x; // x = random pozycja w tablicy
+    wyjscie[x] = char(rng);
+    zajete[x] = 1;
+    // drugie wpisanie rng w random pozycji, ale tak zeby nie zakrylo istniejacego znaku + zaznacz zajete
+    znaki[5] = rng; // 5 = pozycja na ktorej wpisany zostanie znak tak aby  nie zakryc istniejacego 
+    // + jesli wpisywany element jest ostatni to jest wpisywany raz, kazdego znaku moana uzyc raz
+}
+
+void wyswielt() { // bierze tab i rozmiar jako arg
+    // wyswietlanie tablicy
+}
+
+void wyczysc() { // wszystkie tab jako arg
+    // czysci zawartosc tablic
+}
+
+int main()
+{
+    int rozmiar;
+    bool check = false;
+    while (check == false) {
+        cout << "Rozmiar tablicy: ";
+        cin >> rozmiar;
+        if (rozmiar > 87 || rozmiar < 0)
+            cout << "Nieprawidlowy rozmiar tablicy (dostepny zakres 0 - 87)" << endl;
+        else if (rozmiar % 2 == 0)
+            cout << "Rozmiar tablicy musi byc liczba nieparzysta" << endl;
+        else
+            check = true;
+    }
+
+    char* wyjscie = new char[rozmiar];
+    int* zajete = new int[rozmiar];
+    char znaki [45];
+
+
+    /*srand(time(0));
+    int ile = rand() % 100;
+    ile = rand() % 100;
+   */
+    
+    delete[] wyjscie;
+    delete[] zajete;
+}
+
+// tablica 88 elementow i uciac ile chce user
+//2 razy los do kazdej litry
+//uzyc ascii 
+
+//rand()%(b-a+1)+a
+//a = 48; b=93
