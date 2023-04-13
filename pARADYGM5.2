@@ -1,0 +1,38 @@
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
+
+
+ // MA ZWRACAC INT - A = 10 ITD
+char max_val(string &txt, int &check) {
+    char max = 0;
+    for (int i = 0; i < txt.size(); i++) {
+        if (int(txt[i]) > max)
+            max = int(txt[i]);
+    }
+    
+    if (int(max) < 58 && int(max) > 47) {
+       check = int(max) - 48 + 1;
+    }
+    else if (max < 91 && max > 64)
+        check = int(max) - 55 + 1;
+    else check = -1;
+    cout << "max: " << max << endl;
+    return max;
+}
+
+int main()
+{
+    int system_liczbowy;
+    int* wskS = &system_liczbowy;
+    string text = "AB2A281";
+    string* wskT = &text;
+   
+    max_val(*wskT, *wskS);
+    cout << system_liczbowy << endl;
+
+}
+
+// system_liczbowy = najwieksza + 1
