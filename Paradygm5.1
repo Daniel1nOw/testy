@@ -1,0 +1,29 @@
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
+
+void check_num(string &txt, int &check) {
+    check = 1;
+    for (int i = 0; i < txt.size(); i++) {
+        //48-57
+        if (txt[i] < 48 || (txt[i] > 57 && txt[i] < 64) || txt[i] > 90) {
+            check = 0;
+        }
+    }
+}
+
+int main()
+{
+    // system_liczbowy
+    string text = "ABI2AUYD281";
+    int wynik;
+    int poprawnosc;
+    int* wskP = &poprawnosc;
+    string* wskT = &text;
+    
+    check_num(*wskT, *wskP);
+    cout << poprawnosc << endl;
+
+}
