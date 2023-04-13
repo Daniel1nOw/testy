@@ -1,0 +1,179 @@
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <chrono>
+#include <random>
+
+using namespace std;
+
+void wprowadz(int size, char* wyjscie, char* znaki, int* zajete) {
+
+    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+
+    for (int i = 0; i < 46; i++) {
+        znaki[i] = 48 + i;
+    }
+    shuffle(&znaki[0], &znaki[46], std::default_random_engine(seed));
+
+    for (int i = 0; i < size; i++) {
+        zajete[i] = i;
+    }
+    shuffle(&zajete[0], &zajete[size], std::default_random_engine(seed));
+    int licz = 0;
+    int wyj = 0;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (zajete[j] == i) {
+                wyjscie[j] = znaki[wyj];
+                licz++;
+                j = size;
+            }
+        }
+        if (licz == 2) {
+            licz = 0;
+            wyj++;
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        cout << (wyjscie[i]) << " ";
+    }
+
+    cout << endl;
+
+}
+
+int main()
+{
+    int rozmiar;
+    bool check = false;
+    while (check == false) {
+        cout << "Rozmiar tablicy: ";
+        cin >> rozmiar;
+        if (rozmiar > 87 || rozmiar < 0)
+            cout << "Nieprawidlowy rozmiar tablicy (dostepny zakres 0 - 87)" << endl;
+        else if (rozmiar % 2 == 0)
+            cout << "Rozmiar tablicy musi byc liczba nieparzysta" << endl;
+        else
+            check = true;
+    }
+
+    char* wyjscie = new char[rozmiar];
+    char znaki[46];
+    int* zajete = new int[rozmiar];
+
+    wprowadz(rozmiar, wyjscie, znaki, zajete);
+    
+
+} 
+
+
+///tutaj 2 wesrja -----------------------------------------------
+
+
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
+
+int ile_jest(int roz, int *zaj) {
+
+    int ile = 0;
+
+    for (int i = 0; i < roz; i++) {
+        if (zaj[i] == 1)
+            ile++;
+    }
+    return ile;
+}
+
+void wprowadz(int size, char *wyjscie, int *zajete, char *znaki) {
+
+    bool stop1 = false;
+    bool stop2 = false;
+    int rng;
+    int x;
+    while (stop1 == false) {
+        srand(time(NULL));
+        rng = rand() % 45 + 48; // losowy char
+        stop1 = true;
+        for (int i = 0; i < floor((ile_jest(size, zajete))/2); i++) { // spr czy char nie zostal juz uzyty
+            if (znaki[i] == rng)
+                stop1 = false;
+        }
+    }
+    for (int i = 0; i < 2; i++) {
+        stop2 = false;
+        while (stop2 == false) {
+            srand(time(NULL));
+            x = (rand() % (size)); // pozycja w tablicy
+            x = (rand() % (size)); // pozycja w tablicy
+            if (zajete[x] != 1) {
+                stop2 = true;
+                wyjscie[x] = char(rng);
+                zajete[x] = 1;
+                
+            }
+            if (size - ile_jest(size, zajete) == 0) {
+                znaki[((ile_jest(size, zajete)) / 2)] = rng;
+                return;
+            }
+        }
+    }
+    znaki[((ile_jest(size, zajete) / 2)-1)] = rng;
+    
+    // + jesli wpisywany element jest ostatni to jest wpisywany raz, kazdego znaku moana uzyc raz
+}
+
+void wyswielt(int s,char* wyj) { // bierze tab i rozmiar jako arg
+
+    for (int i = 0; i < s; i++) {
+        cout << char(wyj[i]) << " ";
+    }
+}
+
+void wyczysc(int size, char* wyjscie, int* zajete, char* znaki) { // wszystkie tab jako arg
+    for (int i = 0; i < size; i++) {
+        wyjscie[i] = ' ';
+        zajete[i] = 0;
+    }
+    for (int i = 0; i < 45; i++) {
+        znaki[i] = ' ';
+    }
+}
+
+int main()
+{
+    srand(time(NULL));
+    int rozmiar;
+    bool check = false;
+    while (check == false) {
+        cout << "Rozmiar tablicy: ";
+        cin >> rozmiar;
+        if (rozmiar > 87 || rozmiar < 0)
+            cout << "Nieprawidlowy rozmiar tablicy (dostepny zakres 0 - 87)" << endl;
+        else if (rozmiar % 2 == 0)
+            cout << "Rozmiar tablicy musi byc liczba nieparzysta" << endl;
+        else
+            check = true;
+    }
+
+    char* wyjscie = new char[rozmiar];
+    int* zajete = new int[rozmiar];
+    char znaki[45];
+
+
+    for (int i = 0; i <= rozmiar / 2; i++) {
+        wprowadz(rozmiar, wyjscie, zajete, znaki);
+    }
+    cout << endl;
+    wyswielt(rozmiar, wyjscie);
+    cout << endl;
+
+    delete[] wyjscie;
+    delete[] zajete;
+}
+
