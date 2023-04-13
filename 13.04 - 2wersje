@@ -79,7 +79,7 @@ int main()
 
 using namespace std;
 
-int ile_jest(int roz, int *zaj) {
+int ile_jest(int roz, int* zaj) {
 
     int ile = 0;
 
@@ -90,17 +90,17 @@ int ile_jest(int roz, int *zaj) {
     return ile;
 }
 
-void wprowadz(int size, char *wyjscie, int *zajete, char *znaki) {
-
+void wprowadz(int size, char* wyjscie, int* zajete, char* znaki) {
+    srand(time(NULL));
     bool stop1 = false;
     bool stop2 = false;
     int rng;
     int x;
     while (stop1 == false) {
-        srand(time(NULL));
+       
         rng = rand() % 45 + 48; // losowy char
         stop1 = true;
-        for (int i = 0; i < floor((ile_jest(size, zajete))/2); i++) { // spr czy char nie zostal juz uzyty
+        for (int i = 0; i < floor((ile_jest(size, zajete)) / 2); i++) { // spr czy char nie zostal juz uzyty
             if (znaki[i] == rng)
                 stop1 = false;
         }
@@ -108,14 +108,14 @@ void wprowadz(int size, char *wyjscie, int *zajete, char *znaki) {
     for (int i = 0; i < 2; i++) {
         stop2 = false;
         while (stop2 == false) {
-            srand(time(NULL));
+            
             x = (rand() % (size)); // pozycja w tablicy
             x = (rand() % (size)); // pozycja w tablicy
             if (zajete[x] != 1) {
                 stop2 = true;
                 wyjscie[x] = char(rng);
                 zajete[x] = 1;
-                
+
             }
             if (size - ile_jest(size, zajete) == 0) {
                 znaki[((ile_jest(size, zajete)) / 2)] = rng;
@@ -123,12 +123,12 @@ void wprowadz(int size, char *wyjscie, int *zajete, char *znaki) {
             }
         }
     }
-    znaki[((ile_jest(size, zajete) / 2)-1)] = rng;
-    
+    znaki[((ile_jest(size, zajete) / 2) - 1)] = rng;
+
     // + jesli wpisywany element jest ostatni to jest wpisywany raz, kazdego znaku moana uzyc raz
 }
 
-void wyswielt(int s,char* wyj) { // bierze tab i rozmiar jako arg
+void wyswielt(int s, char* wyj) { // bierze tab i rozmiar jako arg
 
     for (int i = 0; i < s; i++) {
         cout << char(wyj[i]) << " ";
@@ -176,4 +176,3 @@ int main()
     delete[] wyjscie;
     delete[] zajete;
 }
-
