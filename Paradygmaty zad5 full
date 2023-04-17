@@ -1,0 +1,84 @@
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
+
+void check_num(string& txt, int& poprawn) {
+    poprawn = 1;
+    for (int i = 0; i < txt.size(); i++) {
+        if (txt[i] < 48 || (txt[i] > 57 && txt[i] < 65) || txt[i] > 90) { 
+            poprawn = 0;
+        }   // jesli znak poza zakresami 48 - 57 i 65 - 90 to poprawnosc = 0
+    }
+}
+
+int max_val(string& txt, int& sys) {
+    int max = 0;
+    for (int i = 0; i < txt.size(); i++) {
+        if (int(txt[i]) > max)
+            max = int(txt[i]);
+    }
+
+    if (int(max) < 58 && int(max) > 47) {
+        sys = int(max) - 48 + 1;
+        max -= 48;
+    }
+    else if (max < 91 && max > 64) {
+        sys = int(max) - 55 + 1;
+        max -= 55;
+    }
+    else {
+        sys = -1;
+    }
+    return max;
+}
+
+void convert_to_dec(string& txt, int& check, int& wynik) {
+    max_val(txt, check);
+
+    int dec = 0;
+    wynik = 0;
+    int mnoz;
+
+    for (int i = txt.size()-1; i >= 0 ; i--) {
+        mnoz = 1;
+        if (int(txt[i]) < 58 && int(txt[i]) > 47)
+            dec = int(txt[i]) - 48;
+        else
+            dec = int(txt[i]) - 55;
+
+        for (int j = 0; j < txt.size() - 1 - i; j++) {
+            mnoz *= check;
+        }
+
+        wynik += dec * mnoz;
+    }
+}
+
+int main()
+{
+    string text = "AA";
+    cout << "Text: " << text << endl << endl;
+    int poprawnosc;
+    int system_liczbowy;
+    int wynik;
+    
+    int* wskP = &poprawnosc;
+    int* wskS = &system_liczbowy;
+    int* wskW = &wynik;
+
+    // ZADANIE 1
+    check_num(text, *wskP);
+    cout << "poprawnosc: " << poprawnosc << endl << endl;
+
+    // ZADANIE 2
+    cout << "Max wartosc: " << max_val(text, *wskS) << endl;
+    cout << "System liczbowy: " << system_liczbowy << endl << endl;
+
+    // ZADANIE 3
+    convert_to_dec(text, *wskS, *wskW);
+    cout << "Suma w dec: " << wynik << endl;
+
+
+}
