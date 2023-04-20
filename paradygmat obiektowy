@@ -1,0 +1,74 @@
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
+
+//ZADANIE 2
+class atrakcja {
+protected:
+	float cena;
+	string nazwa;
+	string opis;
+public:
+	float get_cena(){
+		return cena;
+	}
+	string get_nazwa() {
+		return nazwa;
+	}
+	string get_opis() {
+		return opis;
+	}
+};
+
+class kolejka : public atrakcja {
+private:
+	string godz_odjazdu;
+	string godz_przyjazdu;
+public:
+	void inicjuj(float c, string n, string o, string go, string gp) {
+		cena = c;
+		nazwa = n;
+		opis = o;
+		godz_odjazdu = go;
+		godz_przyjazdu = gp;
+	}
+};
+
+class zamek : public atrakcja {
+private:
+	string czas_zwiedzania;
+public:
+	void inicjuj(float c, string n, string o, string cz) {
+		cena = c;
+		nazwa = n;
+		opis = o;
+		czas_zwiedzania = cz;
+	}
+};
+
+class film : public atrakcja {
+private:
+	string czas_trwania;
+	string tytul;
+public:
+	void inicjuj(float c, string n, string o, string ct, string t) {
+		cena = c;
+		nazwa = n;
+		opis = o;
+		czas_trwania = ct;
+		tytul = t;
+	}
+};
+
+int main()
+{
+	
+
+}
+
+
+// w pierwszym mozna tez przyklady zarzadania pamiecia
+// zadanie 1 i	2 lub 3		wysłać
+// mozna vectorow uzywac
