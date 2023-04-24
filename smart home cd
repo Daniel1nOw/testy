@@ -78,3 +78,4 @@ namespace SmartHomeTests
         }
     }
 }
+// w tescie zmienna temp to tablica gdzie kazda wartosc to kolejna sekunda testu
