@@ -1,0 +1,80 @@
+using System;
+
+namespace SmartHome
+{
+    public class Class1
+    {
+        public static float FtoC(float temp)
+        {
+            return (temp-32)*5/9;          
+        }
+    }
+    public interface ITemperatureSensor
+    {
+        float getTemperature();
+    }
+    public interface IValveController
+    {
+        bool openValve();
+        void desiredTemperature(float temperature);
+    }
+  
+    class Valvecontroller : IValveController
+    {
+        private ITemperatureSensor sensor;
+
+        float temperature;
+
+        public Valvecontroller(ITemperatureSensor sensor)
+        {
+            this.sensor = sensor;
+        }
+
+        public bool openValve()
+        {
+            if (temperature < sensor.getTemperature())
+            {
+                return true;
+            }
+            else return false;
+        }
+        public void desiredTemperature(float temperature)
+        {
+            int cykl = 5;
+            for (int i = 0; i < cykl; i++)
+            {
+                if (temperature != sensor.getTemperature())
+                {
+                    i = 0;
+                    openValve();
+                }
+            }
+        }
+    }
+}
+// 
+
+using System;
+using Xunit;
+
+namespace SmartHomeTests
+{
+    public class UnitTest1
+    {
+
+        public class TemperatureSensor : SmartHome.ITemperatureSensor
+        {
+            public float getTemperature()
+            {
+                return 22;
+            }
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            float res = SmartHome.Class1.FtoC(32F);
+            Assert.Equal(0, res);
+        }
+    }
+}
