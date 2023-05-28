@@ -1,0 +1,154 @@
+using System;
+
+namespace ClassLibrary2
+{
+    public class Class1
+    {
+        public static float FtoC(float temp)
+        {
+            return (temp - 32) * 5 / 9;
+        }
+    }
+    public interface ITemperatureSensor
+    {
+        float getTemperature();
+    }
+
+    public interface IValveController
+    {
+        bool openValve();
+        void desiredTemperature(float temperature);
+    }
+
+    public class Valvecontroller : IValveController
+    {
+        private ITemperatureSensor sensor;
+
+        float tempNow;
+        float tempGoal;
+        int cyklT = 0;
+        int cyklF = 0;
+
+        public Valvecontroller(ITemperatureSensor sensor)
+        {
+            this.sensor = sensor;
+        }
+
+        public bool openValve()
+        {
+            if(cyklT == 5 || cyklF == 5)
+            {
+                cyklF = 0;
+                cyklT = 0;
+            }
+            
+            if(tempNow >= tempGoal || cyklF > 0)
+            {
+                cyklF++;
+                return false;
+            }
+            if (tempNow < tempGoal || cyklT > 0)
+            {
+                cyklT++;
+                return true;
+            }
+            else return false;
+        }
+        public void desiredTemperature(float temperature)
+        {
+            tempGoal = temperature;
+        }
+
+        public void actualTemperature(float temperature)
+        {
+            tempNow = temperature;
+        }
+    }
+}
+
+
+/// TESTY
+
+using ClassLibrary2;
+using System;
+using Xunit;
+
+namespace TestProject2
+{
+    public struct ValveCase
+    {
+        public float actualTemperature;
+        public float desiredTemperature;
+        public bool expectedValvePosition;
+        public ValveCase(float actualTemperature, float desiredTemperature, bool expectedValvePosition)
+        {
+            this.actualTemperature = actualTemperature;
+            this.desiredTemperature = desiredTemperature;
+            this.expectedValvePosition = expectedValvePosition;
+        }
+    }
+    public class MockSensor : ITemperatureSensor
+    {
+        public ValveCase[] testScenario1 = {
+            new ValveCase(15, 20, true),
+            new ValveCase(16, 20, true),
+            new ValveCase(17, 20, true),
+            new ValveCase(18, 20, true),
+            new ValveCase(19, 20, true),
+            new ValveCase(20, 20, false),
+            new ValveCase(20, 20, false),
+            new ValveCase(20, 20, false),
+            new ValveCase(19.5f, 20, false),
+            new ValveCase(19.5f, 20, false),
+            new ValveCase(19, 20, true),
+            new ValveCase(19.5f, 20, true)
+        };
+
+        ValveCase[] testScenario2 = {
+            new ValveCase(15, 20, true),
+            new ValveCase(16, 20, true),
+            new ValveCase(17, 20, true),
+            new ValveCase(18, 20, true),
+            new ValveCase(19, 20, true),
+            new ValveCase(20, 20, false),
+            new ValveCase(20, 20, false),
+            new ValveCase(20, 20, false),
+            new ValveCase(19.5f, 20, false),
+            new ValveCase(19.5f, 20, false),
+            new ValveCase(19, 20, true),
+            new ValveCase(19.5f, 20, true)
+        };
+
+        private float temperature;
+
+        public void setTemperature(float temp)
+        {
+            temperature = temp;
+        }
+
+        public float getTemperature()
+        {
+            return temperature;
+        }
+        
+    }
+    public class UnitTest1
+    {
+        public static MockSensor sensorek = new MockSensor(); // test scenario
+        public Valvecontroller kontroler = new Valvecontroller(sensorek); // kod z class1
+
+        [Fact]
+        public void Test1()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                sensorek.setTemperature(sensorek.testScenario1[i].actualTemperature);
+                float oczekTemp = sensorek.testScenario1[i].desiredTemperature;
+                kontroler.desiredTemperature(oczekTemp);
+                kontroler.actualTemperature(sensorek.testScenario1[i].actualTemperature);
+                bool czyOtwarty = kontroler.openValve();
+                Assert.Equal(sensorek.testScenario1[i].expectedValvePosition, czyOtwarty);
+            }
+        }
+    }
+}
