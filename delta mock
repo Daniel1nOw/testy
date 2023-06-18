@@ -1,0 +1,122 @@
+////////////class1
+
+namespace lab11
+{
+    public interface IDeltaCalculator
+    {
+        float DeltaSqrt(int a, int b, int c);
+    }
+
+    public class SolveQuadraticEquation
+    {
+        private readonly IDeltaCalculator calculator;
+
+        public SolveQuadraticEquation(IDeltaCalculator calculator)
+        {
+            this.calculator = calculator;
+        }
+
+        public float GetX1(int a, int b, int c)
+        {
+            float d = calculator.DeltaSqrt(a, b, c);
+
+            if (d < 0)
+            {
+                return float.NaN;
+            }
+
+            float sqrtD = (float)Math.Sqrt(d);
+            float x1 = (-b + sqrtD) / (2 * a);
+            return x1;
+        }
+
+        public float GetX2(int a, int b, int c)
+        {
+            float d = calculator.DeltaSqrt(a, b, c);
+
+            if (d < 0)
+            {
+                return float.NaN;
+            }
+
+            float sqrtD = (float)Math.Sqrt(d);
+            float x2 = (-b - sqrtD) / (2 * a);
+            return x2;
+        }
+    }
+}
+
+test //////////////
+
+
+using System;
+using Xunit;
+using Moq;
+using lab11;
+
+namespace lab11
+{
+    public class UnitTest1
+    {
+        [Fact]
+        public void TestDeltaBelowZero()
+        {
+            int a = 1;
+            int b = 2;
+            int c = 3;
+
+            Mock<IDeltaCalculator> calculatorMock = new Mock<IDeltaCalculator>();
+            calculatorMock.Setup(l => l.DeltaSqrt(a, b, c)).Returns(-1);
+            SolveQuadraticEquation calculatorUser = new SolveQuadraticEquation(calculatorMock.Object);
+
+            float x1 = calculatorUser.GetX1(a, b, c);
+            float x2 = calculatorUser.GetX2(a, b, c);
+
+            Assert.Equal(float.NaN, x1);
+            Assert.Equal(float.NaN, x2);
+
+            calculatorMock.Verify(c => c.DeltaSqrt(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public void TestDeltaAboveZero()
+        {
+            int a = 2;
+            int b = 2;
+            int c = -12;
+
+            Mock<IDeltaCalculator> calculatorMock = new Mock<IDeltaCalculator>();
+            calculatorMock.Setup(l => l.DeltaSqrt(a, b, c)).Returns(100);
+            SolveQuadraticEquation calculatorUser = new SolveQuadraticEquation(calculatorMock.Object);
+
+            float x1 = calculatorUser.GetX1(a, b, c);
+            float x2 = calculatorUser.GetX2(a, b, c);
+
+            Assert.Equal(2, x1);
+            Assert.Equal(-3, x2);
+
+            calculatorMock.Verify(c => c.DeltaSqrt(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(2));
+        }
+
+
+        [Fact]
+        public void TestDeltaEqualZero()
+        {
+            int a = 2;
+            int b = 4;
+            int c = 2;
+
+            Mock<IDeltaCalculator> calculatorMock = new Mock<IDeltaCalculator>();
+            calculatorMock.Setup(l => l.DeltaSqrt(a, b, c)).Returns(0);
+            SolveQuadraticEquation calculatorUser = new SolveQuadraticEquation(calculatorMock.Object);
+
+            float x1 = calculatorUser.GetX1(a, b, c);
+            float x2 = calculatorUser.GetX2(a, b, c);
+
+            Assert.Equal(-1, x1);
+            Assert.Equal(-1, x2);
+
+            calculatorMock.Verify(c => c.DeltaSqrt(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(2));
+        }
+    }
+}
